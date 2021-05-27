@@ -47,19 +47,20 @@ pipeline {
 				url:'https://github.com/hugojose14/consignaciones'
 			]]
 		])
+		
+		sh ' gradle --b ./microservicio/build.gradle clean '
 
       }
     }
 	
 	stage('Compile & Unit Tests') {
-        steps{
-            dir("microservicio") {
-                echo "------------>Clean Tests<------------"
-                sh 'gradle clean'
-                echo "------------>Tests<------------"
-                sh 'gradle test'
-            }
-        }
+      steps{
+        echo "------------>Compile project<------------"
+		    sh 'gradle --b ./microservicio/build.gradle compileJava'
+		
+        echo "------------>Unit Tests<------------"
+		    sh 'gradle --b ./microservicio/build.gradle test'
+      }
     }
 
     stage('Static Code Analysis') {
