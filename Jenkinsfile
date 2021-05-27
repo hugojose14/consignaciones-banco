@@ -45,13 +45,26 @@ pipeline {
 
       }
     }
-    
-    stage('Compile & Unit Tests') {
+	
+	 stage('Clean Project') {
       steps{
-        echo "------------>Compile & Unit Tests<------------"
-		sh 'chmod +x gradlew'
-		sh './gradlew --b ./build.gradle test
+        echo "------------>Cleaning<------------"
+		sh 'gradle --b ./build.gradle clean compileJava'
+      }
+    }
 
+    
+    stage('Compile') {
+      steps{
+        echo "------------>Compile<------------"
+        sh 'gradle --b ./build.gradle compileJava'
+      }
+    }
+
+    stage('Unit Tests') {
+      steps{
+        echo "------------>Unit Tests<------------"
+        sh 'gradle --b ./build.gradle test --stacktrace'
       }
     }
 
