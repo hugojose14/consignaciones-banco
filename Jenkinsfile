@@ -48,19 +48,18 @@ pipeline {
 			]]
 		])
 		
-		sh ' gradle --b ./microservicio/build.gradle clean '
-
       }
     }
 	
 	stage('Compile & Unit Tests') {
-      steps{
-        echo "------------>Compile project<------------"
-		    sh 'gradle --b ./microservicio/build.gradle compileJava'
-		
-        echo "------------>Unit Tests<------------"
-		    sh 'gradle --b ./microservicio/build.gradle test'
-      }
+        steps{
+            dir("microservicio") {
+                echo "------------>Clean Tests<------------"
+                sh 'gradle clean'
+                echo "------------>Tests<------------"
+                sh 'gradle test'
+            }
+        }
     }
 
     stage('Static Code Analysis') {
